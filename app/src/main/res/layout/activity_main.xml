@@ -32,6 +32,7 @@
         android:padding="20dp"
         android:text="Bill Clinton"
         android:textColor="#0D0D74"
+        android:visibility="invisible"
         android:textSize="30sp" />
 
     <TextView
@@ -46,6 +47,7 @@
         android:padding="20dp"
         android:text="George H. W. Bush"
         android:textColor="#0D0D74"
+        android:visibility="invisible"
         android:textSize="30sp" />
 
     <TextView
@@ -63,12 +65,36 @@
         android:textSize="30sp" />
 
     <ImageView
-        android:id="@+id/toggle_choices_visibility"
+        android:id="@+id/ic_eye_visible"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="40dp"
         android:textColor="#0D0D74"
-        android:src="@drawable/ic_click" />
+        android:src="@drawable/ic_eye" />
+
+    <ImageView
+        android:id="@+id/ic_eye_invisible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:textColor="#bcbcbc"
+        android:background="@drawable/ic_eye"
+        android:visibility="invisible"
+        android:src="@drawable/ic_eye" />
+
+    <ImageView
+        android:id="@+id/ic_add"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignRight="@id/flashcard_answer3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/ic_add"
+        android:src="@drawable/ic_add"
+        android:textColor="#bcbcbc" />
 </RelativeLayout>

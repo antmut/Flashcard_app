@@ -1,39 +1,67 @@
 package com.example.flashcard;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+
+    TextView flashcardQuestion;
+    TextView flashcardAnswer1;
+    TextView flashcardAnswer2;
+    TextView flashcardAnswer3;
+    ImageView eyeVisible;
+    ImageView eyeInvisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView flashcardQuestion = findViewById(R.id.flashcard_question);
-        TextView flashcardAnswer1 = findViewById(R.id.flashcard_answer1);
-        TextView flashcardAnswer2 = findViewById(R.id.flashcard_answer2);
-        TextView flashcardAnswer3 = findViewById(R.id.flashcard_answer3);
-        ImageView toggle_choices_visibility = findViewById(R.id.toggle_choices_visibility);
+        flashcardQuestion = findViewById(R.id.flashcard_question);
+        flashcardAnswer1 = findViewById(R.id.flashcard_answer1);
+        flashcardAnswer2 = findViewById(R.id.flashcard_answer2);
+        flashcardAnswer3 = findViewById(R.id.flashcard_answer3);
 
-        toggle_choices_visibility.setOnClickListener(new View.OnClickListener() {
+        eyeVisible = findViewById(R.id.ic_eye_visible);
+        eyeInvisible = findViewById(R.id.ic_eye_invisible);
+
+
+        //I clicked the question
+        flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean isShowingAnswers = false;
-                if(isShowingAnswers) {
-                    flashcardAnswer1.setVisibility(View.VISIBLE);
-                    flashcardAnswer2.setVisibility(View.VISIBLE);
-                    flashcardAnswer3.setVisibility(View.VISIBLE);
-                    isShowingAnswers = false;
-                }
-                else{
-                    flashcardAnswer1.setVisibility(View.INVISIBLE);
-                    flashcardAnswer2.setVisibility(View.INVISIBLE);
-                    flashcardAnswer3.setVisibility(View.INVISIBLE);
-                    isShowingAnswers = true;
-                }
+                Toast.makeText(MainActivity.this, "I clicked the question", Toast.LENGTH_SHORT).show();
+                Log.i("Toni", "Entered method onClick");
+            }
+        });
+
+        //When user tap the eye icon answers become visible
+        eyeVisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eyeVisible.setVisibility(View.INVISIBLE);
+                eyeInvisible.setVisibility(View.VISIBLE);
+                flashcardAnswer1.setVisibility(View.INVISIBLE);
+                flashcardAnswer2.setVisibility(View.INVISIBLE);
+                flashcardAnswer3.setVisibility(View.VISIBLE);
+            }
+        });
+
+        // When user tap the eye icon answers become invisible
+        eyeInvisible.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eyeVisible.setVisibility(View.VISIBLE);
+                eyeInvisible.setVisibility(View.INVISIBLE);
+                flashcardAnswer1.setVisibility(View.INVISIBLE);
+                flashcardAnswer2.setVisibility(View.INVISIBLE);
+                flashcardAnswer3.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -63,22 +91,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // User can tap on the background view to reset all views to defult settings
+        // User can tap on the background view to reset all views to default settings
         findViewById(R.id.parent).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((TextView) findViewById(R.id.flashcard_answer1)).setBackgroundColor(getResources().getColor(R.color.tan));
                 ((TextView) findViewById(R.id.flashcard_answer2)).setBackgroundColor(getResources().getColor(R.color.tan));
                 ((TextView) findViewById(R.id.flashcard_answer3)).setBackgroundColor(getResources().getColor(R.color.tan));
-                }
+            }
         });
 
-    }
-}
+        // Creating new intent
+        findViewById(R.id.ic_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
+                MainActivity.this.startActivityForResult(intent, 100);
 
-//   User can tap the answer to see the question again
-//   flashcardAnswer.setOnClickListener(new View.OnClickListener() {
-//   @Override
-//   public void onClick(View view) {
-//       flashcardQuestion.setVisibility(View.VISIBLE);
-//       flashcardAnswer.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+        // get data passed from AddCardActivity
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (requestCode == 100) {            // codes must match
+                if(data != null) {
+                    String question = data.getExtras().getString("Question_key");
+                    String answer = data.getExtras().getString("Answer_key");
+                    flashcardQuestion.setText(question);
+                    flashcardAnswer3.setText(answer);
+                }
+            }
+        }
+}
