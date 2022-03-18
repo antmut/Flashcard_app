@@ -15,10 +15,9 @@ Improving Flashcard app from Lab1 by adding new features and creating new screen
 ## Optional
 - [x] User can edit a card
 - [x] An error message is shown if the user doesn't enter both a Question and an Answer
-- [x] A notification is shown if the card was created successfully
-- [x] User can also enter multiple choice answers when creating a card
+- [] A notification is shown if the card was created successfully
+- [] User can also enter multiple choice answers when creating a card
 - [x] App is further styled and customized!
-
 
 # LAB1_FLASHCARD
 
