@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 eyeVisible.setVisibility(View.INVISIBLE);
                 eyeInvisible.setVisibility(View.VISIBLE);
-                flashcardAnswer1.setVisibility(View.INVISIBLE);
-                flashcardAnswer2.setVisibility(View.INVISIBLE);
+                flashcardAnswer1.setVisibility(View.VISIBLE);
+                flashcardAnswer2.setVisibility(View.VISIBLE);
                 flashcardAnswer3.setVisibility(View.VISIBLE);
             }
         });
@@ -118,10 +118,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
-                String str1 = ((TextView) findViewById(R.id.flashcard_question)).getText().toString();
-                String str2 = ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString();
-                intent.putExtra("Question", str1);
-                intent.putExtra("Answer", str2);
+                String str = ((TextView) findViewById(R.id.flashcard_question)).getText().toString();
+                String str1 = ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString();
+                String str2 = ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString();
+                String str3 = ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString();
+                intent.putExtra("Question", str);
+                intent.putExtra("Answer1", str1);
+                intent.putExtra("Answer2", str2);
+                intent.putExtra("Answer3", str3);
                 MainActivity.this.startActivityForResult(intent, 100);
             }
         });
@@ -134,8 +138,12 @@ public class MainActivity extends AppCompatActivity {
                 if(data != null) {
                     String question = data.getExtras().getString("Question_key");
                     String answer = data.getExtras().getString("Answer_key");
+                    String answer1 = data.getExtras().getString("Answer_key1");
+                    String answer2 = data.getExtras().getString("Answer_key2");
                     flashcardQuestion.setText(question);
-                    flashcardAnswer3.setText(answer);
+                    flashcardAnswer1.setText(answer);
+                    flashcardAnswer2.setText(answer1);
+                    flashcardAnswer3.setText(answer2);
                 }
             }
         }

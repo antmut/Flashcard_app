@@ -26,14 +26,14 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="340dp"
+        android:layout_marginBottom="300dp"
         android:background="#fce5cd"
         android:gravity="center"
         android:padding="20dp"
         android:text="Bill Clinton"
         android:textColor="#0D0D74"
-        android:visibility="invisible"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/flashcard_answer2"
@@ -41,14 +41,14 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="240dp"
+        android:layout_marginBottom="220dp"
         android:background="#fce5cd"
         android:gravity="center"
         android:padding="20dp"
         android:text="George H. W. Bush"
         android:textColor="#0D0D74"
-        android:visibility="invisible"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/flashcard_answer3"
@@ -62,7 +62,8 @@
         android:padding="20dp"
         android:text="Barak Obama"
         android:textColor="#0D0D74"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:visibility="visible" />
 
     <ImageView
         android:id="@+id/ic_eye_visible"

@@ -48,4 +48,26 @@
         android:layout_marginBottom="-80dp"
         android:hint="Input answer here!" />
 
+    <EditText
+        android:id="@+id/answerTextField1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignBottom="@+id/questionTextField"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="-163dp"
+        android:hint="Input answer here!" />
+
+    <EditText
+        android:id="@+id/answerTextField2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignBottom="@+id/questionTextField"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="-248dp"
+        android:hint="Input answer here!" />
+
 </RelativeLayout>
