@@ -3,7 +3,8 @@
 ### App Description
 Improving Flashcard app from Lab1 by adding new features and creating new screens and passing data from one screen to another.
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
+### App Walk-through
+<img src="https://i.imgur.com/Fi7ZDxJ.gif" width=200><br>
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
@@ -19,13 +20,13 @@ Improving Flashcard app from Lab1 by adding new features and creating new screen
 - [x] User can also enter multiple choice answers when creating a card
 - [x] App is further styled and customized!
 
+
 # LAB1_FLASHCARD
 
 ### App Description
-Creating a flashcard and implementing basic features, set visibility, setOnClick and change colors 
+Creating a flashcard and implementing basic features, set visibility, setOnClick and change colors
 
 ### App Walk-though
-
 <img src="https://i.imgur.com/BfwiNTf.gif" width=200><br>
 
 ## Required
@@ -38,5 +39,5 @@ Creating a flashcard and implementing basic features, set visibility, setOnClick
 - [x] toggle the flashcard between the question side and the answer side
 - [x] Style the question and answer side of the card to better distinguish between the two sides
 - [x] Add selectable multiple choice answers beneath the card
-   - [x] Change the background color of the multiple choice answers when clicked to indicate whether the question was answered correctly
+  - [x] Change the background color of the multiple choice answers when clicked to indicate whether the question was answered correctly
 - [x] Further customize and style the card
