@@ -4,7 +4,7 @@
 Improving Flashcard app from Lab1 by adding new features and creating new screens and passing data from one screen to another.
 
 ### App Walk-through
-<img src="https://i.imgur.com/Fi7ZDxJ.gif" width=200><br>
+<img src="https://i.imgur.com/8ZzW9yw.gif" width=200><br>
 
 ## Required
 - [x] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
