@@ -11,7 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.w3c.dom.Text;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     TextView flashcardAnswer3;
     ImageView eyeVisible;
     ImageView eyeInvisible;
+
+    FlashcardDatabase flashcardDatabase;                                            //declaring as global variable flashcard
+    List<Flashcard> allFlashcards;                                                  //declaring the whole list of flashcards
+    int currentCardIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         eyeVisible = findViewById(R.id.ic_eye_visible);
         eyeInvisible = findViewById(R.id.ic_eye_invisible);
+
+        flashcardDatabase = new FlashcardDatabase(this);                     // initializing flashcardDatabase
+        allFlashcards = flashcardDatabase.getAllCards();
 
         //Toast message if clicked the question
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +140,58 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivityForResult(intent, 100);
             }
         });
+
+        // User can press trash button to delete current card
+        findViewById(R.id.ic_trash).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (allFlashcards == null || allFlashcards.size() == 0) {       //check if empty
+                    Snackbar.make(view,
+                            "No more cards left. Please press enter a card!",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    currentCardIndex = 0;
+                    return;
+                }
+                flashcardDatabase.deleteCard(flashcardQuestion.getText().toString());   //what about answers??
+                allFlashcards = flashcardDatabase.getAllCards();
+                currentCardIndex--;
+            }
+        });
+
+        // User can press next button to go through the cards
+        findViewById(R.id.ic_next).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (allFlashcards == null || allFlashcards.size() == 0) {       //always check edges
+                    return;
+                }
+                    currentCardIndex++;
+
+                if (currentCardIndex >= allFlashcards.size()) {
+                    Snackbar.make(view,
+                            "End of cards reached. Starting from the beginning",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+                    currentCardIndex = 0;
+                }
+                    Flashcard currentCard = allFlashcards.get(currentCardIndex);
+                    flashcardQuestion.setText(currentCard.getQuestion());
+                    flashcardAnswer1.setText(currentCard.getAnswer());
+                    flashcardAnswer2.setText(currentCard.getWrongAnswer1());
+                    flashcardAnswer3.setText(currentCard.getWrongAnswer2());
+            }
+        });
+
+        //Accessing flashcards
+        if (allFlashcards != null && allFlashcards.size() > 0) {                     // check if the list is empty
+            flashcardQuestion.setText(allFlashcards.get(0).getQuestion());
+            flashcardAnswer1.setText(allFlashcards.get(0).getAnswer());
+            flashcardAnswer2.setText(allFlashcards.get(0).getWrongAnswer1());
+            flashcardAnswer3.setText(allFlashcards.get(0).getWrongAnswer2());
+        }
     }
+
         // get data passed from download button AddCardActivity
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -144,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
                     flashcardAnswer1.setText(answer);
                     flashcardAnswer2.setText(answer1);
                     flashcardAnswer3.setText(answer2);
+
+                    flashcardDatabase.insertCard(new Flashcard(question, answer, answer1, answer2));          // save a new flashcard
+                    allFlashcards = flashcardDatabase.getAllCards();                                          // update the list
                 }
             }
         }

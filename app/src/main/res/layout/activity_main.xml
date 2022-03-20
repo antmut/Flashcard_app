@@ -26,7 +26,7 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="300dp"
+        android:layout_marginBottom="280dp"
         android:background="#fce5cd"
         android:gravity="center"
         android:padding="20dp"
@@ -41,7 +41,7 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="220dp"
+        android:layout_marginBottom="200dp"
         android:background="#fce5cd"
         android:gravity="center"
         android:padding="20dp"
@@ -56,7 +56,7 @@
         android:layout_height="75dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="140dp"
+        android:layout_marginBottom="120dp"
         android:background="#fce5cd"
         android:gravity="center"
         android:padding="20dp"
@@ -109,6 +109,30 @@
         android:layout_marginBottom="40dp"
         android:background="@drawable/ic_edit"
         android:src="@drawable/ic_edit"
+        android:textColor="#bcbcbc" />
+
+    <ImageView
+        android:id="@+id/ic_next"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignRight="@id/flashcard_answer3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="375dp"
+        android:background="@drawable/ic_next"
+        android:src="@drawable/ic_next"
+        android:textColor="#bcbcbc" />
+
+    <ImageView
+        android:id="@+id/ic_trash"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@id/flashcard_answer3"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="375dp"
+        android:background="@drawable/ic_trash"
+        android:src="@drawable/ic_trash"
         android:textColor="#bcbcbc" />
 
 </RelativeLayout>
