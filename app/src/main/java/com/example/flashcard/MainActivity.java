@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +32,11 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase flashcardDatabase;                                            //declaring as global variable flashcard
     List<Flashcard> allFlashcards;                                                  //declaring the whole list of flashcards
     int currentCardIndex = 0;
+
+    int getRandomNumber(int minNumber, int maxNumber){
+        Random rand = new Random();
+        return rand.nextInt(((maxNumber - minNumber) + 1) + minNumber);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
                     currentCardIndex = 0;
                     return;
                 }
-                flashcardDatabase.deleteCard(flashcardQuestion.getText().toString());   //what about answers??
+                flashcardDatabase.deleteCard(((TextView) findViewById(R.id.flashcard_question)).getText().toString());   //what about answers??
                 allFlashcards = flashcardDatabase.getAllCards();
                 currentCardIndex--;
             }
@@ -162,15 +168,19 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.ic_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (allFlashcards == null || allFlashcards.size() == 0) {       //always check edges
                     return;
                 }
+                //getRandomNumber(0,5);
                     currentCardIndex++;
 
                 if (currentCardIndex >= allFlashcards.size()) {
                     Snackbar.make(view,
-                            "End of cards reached. Starting from the beginning",
+                            " LAST card is displayed. Starting from the beginning",
                             Snackbar.LENGTH_SHORT)
+                            .setTextColor(getColor(R.color.blue_dark))
+                            .setBackgroundTint(getColor(R.color.tan))
                             .show();
                     currentCardIndex = 0;
                 }
@@ -208,8 +218,10 @@ public class MainActivity extends AppCompatActivity {
                     flashcardAnswer3.setText(answer2);
 
                     Snackbar.make(findViewById(R.id.flashcard_question),
-                            "New flashcard added successfully",
+                            "   New flashcard has been added successfully ",
                             Snackbar.LENGTH_SHORT)
+                            .setTextColor(getColor(R.color.blue_dark))
+                            .setBackgroundTint(getColor(R.color.tan))
                             .show();
 
                     flashcardDatabase.insertCard(new Flashcard(question, answer, answer1, answer2));          // save a new flashcard
@@ -217,30 +229,19 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            else if(requestCode == 101 && requestCode == RESULT_OK) {
+            else if(requestCode == 101 && resultCode == RESULT_OK) {
                 if(data != null) {
 
-                    String question = getIntent().getStringExtra("Question");
-                    String answer1 = getIntent().getStringExtra("Answer1");
-                    String answer2 = getIntent().getStringExtra("Answer2");
-                    String answer3 = getIntent().getStringExtra("Answer3");
-
-                    ((EditText) findViewById(R.id.questionTextField)).setText(question);
-                    ((EditText) findViewById(R.id.answerTextField)).setText(answer1);
-                    ((EditText) findViewById(R.id.answerTextField1)).setText(answer2);
-                    ((EditText) findViewById(R.id.answerTextField2)).setText(answer2);
-
-                    if (((EditText) findViewById(R.id.questionTextField)) == null || ((EditText) findViewById(R.id.answerTextField)) == null
-                            || ((EditText) findViewById(R.id.answerTextField1)) == null || ((EditText) findViewById(R.id.answerTextField2)) == null) {
-                        Toast toast = Toast.makeText(MainActivity.this, "Must enter all fields", Toast.LENGTH_SHORT);
-                        toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
-                        toast.show();
-                    }
+                    String question = data.getExtras().getString("Question");
+                    String answer = data.getExtras().getString("Answer");
+                    String answer1 = data.getExtras().getString("Answer1");
+                    String answer2 = data.getExtras().getString("Answer2");
 
                     editCard.setQuestion(question);
-                    editCard.setAnswer(answer1);
-                    editCard.setWrongAnswer1(answer2);
-                    editCard.setWrongAnswer2(answer3);
+                    editCard.setAnswer(answer);
+                    editCard.setWrongAnswer1(answer1);
+                    editCard.setWrongAnswer2(answer2);
+
                     flashcardDatabase.updateCard(editCard);
                 }
             }

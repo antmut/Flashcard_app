@@ -20,11 +20,6 @@ import java.text.BreakIterator;
 
 public class AddCardActivity extends AppCompatActivity {
 
-    EditText questionTextField;
-    EditText answerTextField;
-    EditText answerTextField1;
-    EditText answerTextField2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,14 +27,10 @@ public class AddCardActivity extends AppCompatActivity {
         setContentView(R.layout.add_card_activity);
 
         //Get data passed from edit button in MainActivity
-        String question = getIntent().getStringExtra("Question");
-        String answer1 = getIntent().getStringExtra("Answer1");
-        String answer2 = getIntent().getStringExtra("Answer2");
-        String answer3 = getIntent().getStringExtra("Answer3");
-        ((EditText) findViewById(R.id.questionTextField)).setText(question);
-        ((EditText) findViewById(R.id.answerTextField)).setText(answer1);
-        ((EditText) findViewById(R.id.answerTextField1)).setText(answer2);
-        ((EditText) findViewById(R.id.answerTextField2)).setText(answer3);
+        ((EditText) findViewById(R.id.questionTextField)).setText(getIntent().getStringExtra("Question"));
+        ((EditText) findViewById(R.id.answerTextField)).setText(getIntent().getStringExtra("Answer1"));
+        ((EditText) findViewById(R.id.answerTextField1)).setText(getIntent().getStringExtra("Answer2"));
+        ((EditText) findViewById(R.id.answerTextField2)).setText(getIntent().getStringExtra("Answer3"));
 
         // User can tap on cancel button to go back to main activity
         findViewById(R.id.ic_cancel).setOnClickListener(new View.OnClickListener() {
@@ -56,6 +47,7 @@ public class AddCardActivity extends AppCompatActivity {
 
                 if (((EditText) findViewById(R.id.questionTextField)) == null || ((EditText) findViewById(R.id.answerTextField)) == null
                         || ((EditText) findViewById(R.id.answerTextField1)) == null || ((EditText) findViewById(R.id.answerTextField2)) == null) {
+
                     Toast toast = Toast.makeText(AddCardActivity.this, "Must enter all fields", Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
                     toast.show();
@@ -68,7 +60,7 @@ public class AddCardActivity extends AppCompatActivity {
                     data.putExtra("Answer_key2", ((EditText) findViewById(R.id.answerTextField2)).getText().toString());
                     setResult(RESULT_OK, data);                             // sets result code and bundle data for response
                     finish();                                               // close this activity passing data to main activity
-                  }
+                }
             }
         });
     }
