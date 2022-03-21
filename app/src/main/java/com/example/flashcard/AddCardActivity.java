@@ -6,10 +6,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import org.w3c.dom.Text;
 
@@ -28,6 +31,16 @@ public class AddCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_card_activity);
 
+        //Get data passed from edit button in MainActivity
+        String question = getIntent().getStringExtra("Question");
+        String answer1 = getIntent().getStringExtra("Answer1");
+        String answer2 = getIntent().getStringExtra("Answer2");
+        String answer3 = getIntent().getStringExtra("Answer3");
+        ((EditText) findViewById(R.id.questionTextField)).setText(question);
+        ((EditText) findViewById(R.id.answerTextField)).setText(answer1);
+        ((EditText) findViewById(R.id.answerTextField1)).setText(answer2);
+        ((EditText) findViewById(R.id.answerTextField2)).setText(answer3);
+
         // User can tap on cancel button to go back to main activity
         findViewById(R.id.ic_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,38 +53,22 @@ public class AddCardActivity extends AppCompatActivity {
         findViewById(R.id.ic_down).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent data = new Intent();                             //create new intent to put data
-                String inputQuestion = ((EditText) findViewById(R.id.questionTextField)).getText().toString();
-                String inputAnswer = ((EditText) findViewById(R.id.answerTextField)).getText().toString();
-                String inputAnswer1 = ((EditText) findViewById(R.id.answerTextField1)).getText().toString();
-                String inputAnswer2 = ((EditText) findViewById(R.id.answerTextField2)).getText().toString();
-                data.putExtra("Question_key", inputQuestion);     // puts one string into the intent, with key as "Question_key"
-                data.putExtra("Answer_key", inputAnswer);         // puts another string into the intent, with key as "Answer_key
-                data.putExtra("Answer_key1", inputAnswer1);
-                data.putExtra("Answer_key2", inputAnswer2);
-                if (inputQuestion == "") {
-                    Toast.makeText(AddCardActivity.this, "Must enter both Question and Answer", Toast.LENGTH_SHORT).show();
-                    Log.i("Toni", "Entered method onClick");
-                    }
-                    else {
-                        setResult(RESULT_OK, data);                             // sets result code and bundle data for response
-                        finish();                                               // close this activity passing data to main activity
-                    }
-            }
-        });
 
-        // User get passed data from edit button
-        findViewById(R.id.questionTextField).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String s = getIntent().getStringExtra("Question");
-                String s1 = getIntent().getStringExtra("Answer1");
-                String s2 = getIntent().getStringExtra("Answer2");
-                String s3 = getIntent().getStringExtra("Answer3");
-                questionTextField.setText(s);
-                answerTextField.setText(s1);
-                answerTextField1.setText(s2);
-                answerTextField2.setText(s3);
+                if (((EditText) findViewById(R.id.questionTextField)) == null || ((EditText) findViewById(R.id.answerTextField)) == null
+                        || ((EditText) findViewById(R.id.answerTextField1)) == null || ((EditText) findViewById(R.id.answerTextField2)) == null) {
+                    Toast toast = Toast.makeText(AddCardActivity.this, "Must enter all fields", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
+                    toast.show();
+                }
+                else {
+                    Intent data = new Intent();                             //create new intent to put data
+                    data.putExtra("Question_key", ((EditText) findViewById(R.id.questionTextField)).getText().toString());     // puts one string into the intent, with key as "Question_key"
+                    data.putExtra("Answer_key", ((EditText) findViewById(R.id.answerTextField)).getText().toString());         // puts another string into the intent, with key as "Answer_key
+                    data.putExtra("Answer_key1", ((EditText) findViewById(R.id.answerTextField1)).getText().toString());
+                    data.putExtra("Answer_key2", ((EditText) findViewById(R.id.answerTextField2)).getText().toString());
+                    setResult(RESULT_OK, data);                             // sets result code and bundle data for response
+                    finish();                                               // close this activity passing data to main activity
+                  }
             }
         });
     }

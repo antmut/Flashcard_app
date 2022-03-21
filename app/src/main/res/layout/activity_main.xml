@@ -15,8 +15,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/card_background"
         android:gravity="center"
-        android:text="Who is the 44th President of the United States?"
         android:padding="20dp"
+        android:text="Who is the 44th President of the United States?"
         android:textColor="#0D0D74"
         android:textSize="40sp" />
 

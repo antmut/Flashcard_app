@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView eyeVisible;
     ImageView eyeInvisible;
 
+    Flashcard editCard;
     FlashcardDatabase flashcardDatabase;                                            //declaring as global variable flashcard
     List<Flashcard> allFlashcards;                                                  //declaring the whole list of flashcards
     int currentCardIndex = 0;
@@ -46,11 +48,11 @@ public class MainActivity extends AppCompatActivity {
         flashcardDatabase = new FlashcardDatabase(this);                     // initializing flashcardDatabase
         allFlashcards = flashcardDatabase.getAllCards();
 
-        //Toast message if clicked the question
+        //Toast message shown if question is clicked instead of background to reset answers
         flashcardQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Question was clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Click the background to reset to default", Toast.LENGTH_SHORT).show();
                 Log.i("Toni", "Entered method onClick");
             }
         });
@@ -124,20 +126,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // User can press edit button and navigate to AddCardActivity
+        // User can press edit button and navigate to AddCardActivity with passing data
         findViewById(R.id.ic_edit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
-                String str = ((TextView) findViewById(R.id.flashcard_question)).getText().toString();
-                String str1 = ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString();
-                String str2 = ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString();
-                String str3 = ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString();
-                intent.putExtra("Question", str);
-                intent.putExtra("Answer1", str1);
-                intent.putExtra("Answer2", str2);
-                intent.putExtra("Answer3", str3);
-                MainActivity.this.startActivityForResult(intent, 100);
+
+                Intent myIntent = new Intent(MainActivity.this, AddCardActivity.class);
+                myIntent.putExtra("Question",((TextView) findViewById(R.id.flashcard_question)).getText().toString());
+                myIntent.putExtra("Answer1", ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString());
+                myIntent.putExtra("Answer2", ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString());
+                myIntent.putExtra("Answer3", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
+                MainActivity.this.startActivityForResult(myIntent, 101);
             }
         });
 
@@ -147,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (allFlashcards == null || allFlashcards.size() == 0) {       //check if empty
                     Snackbar.make(view,
-                            "No more cards left. Please press enter a card!",
+                            "No more cards left. Please enter a flashcard!",
                             Snackbar.LENGTH_SHORT)
                             .show();
                     currentCardIndex = 0;
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Accessing flashcards
-        if (allFlashcards != null && allFlashcards.size() > 0) {                     // check if the list is empty
+        if (allFlashcards != null && allFlashcards.size() > 0) {                     // check if list is empty
             flashcardQuestion.setText(allFlashcards.get(0).getQuestion());
             flashcardAnswer1.setText(allFlashcards.get(0).getAnswer());
             flashcardAnswer2.setText(allFlashcards.get(0).getWrongAnswer1());
@@ -196,7 +195,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
-            if (requestCode == 100) {            // codes must match
+
+            if (requestCode == 100 && resultCode == RESULT_OK) {            // codes must match
                 if(data != null) {
                     String question = data.getExtras().getString("Question_key");
                     String answer = data.getExtras().getString("Answer_key");
@@ -207,9 +207,43 @@ public class MainActivity extends AppCompatActivity {
                     flashcardAnswer2.setText(answer1);
                     flashcardAnswer3.setText(answer2);
 
+                    Snackbar.make(findViewById(R.id.flashcard_question),
+                            "New flashcard added successfully",
+                            Snackbar.LENGTH_SHORT)
+                            .show();
+
                     flashcardDatabase.insertCard(new Flashcard(question, answer, answer1, answer2));          // save a new flashcard
                     allFlashcards = flashcardDatabase.getAllCards();                                          // update the list
                 }
             }
+
+            else if(requestCode == 101 && requestCode == RESULT_OK) {
+                if(data != null) {
+
+                    String question = getIntent().getStringExtra("Question");
+                    String answer1 = getIntent().getStringExtra("Answer1");
+                    String answer2 = getIntent().getStringExtra("Answer2");
+                    String answer3 = getIntent().getStringExtra("Answer3");
+
+                    ((EditText) findViewById(R.id.questionTextField)).setText(question);
+                    ((EditText) findViewById(R.id.answerTextField)).setText(answer1);
+                    ((EditText) findViewById(R.id.answerTextField1)).setText(answer2);
+                    ((EditText) findViewById(R.id.answerTextField2)).setText(answer2);
+
+                    if (((EditText) findViewById(R.id.questionTextField)) == null || ((EditText) findViewById(R.id.answerTextField)) == null
+                            || ((EditText) findViewById(R.id.answerTextField1)) == null || ((EditText) findViewById(R.id.answerTextField2)) == null) {
+                        Toast toast = Toast.makeText(MainActivity.this, "Must enter all fields", Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
+                        toast.show();
+                    }
+
+                    editCard.setQuestion(question);
+                    editCard.setAnswer(answer1);
+                    editCard.setWrongAnswer1(answer2);
+                    editCard.setWrongAnswer2(answer3);
+                    flashcardDatabase.updateCard(editCard);
+                }
+            }
+
         }
 }
