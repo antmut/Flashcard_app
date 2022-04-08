@@ -27,10 +27,10 @@ public class AddCardActivity extends AppCompatActivity {
         setContentView(R.layout.add_card_activity);
 
         //Get data passed from edit button in MainActivity
-        ((EditText) findViewById(R.id.questionTextField)).setText(getIntent().getStringExtra("Question"));
-        ((EditText) findViewById(R.id.answerTextField)).setText(getIntent().getStringExtra("Answer1"));
-        ((EditText) findViewById(R.id.answerTextField1)).setText(getIntent().getStringExtra("Answer2"));
-        ((EditText) findViewById(R.id.answerTextField2)).setText(getIntent().getStringExtra("Answer3"));
+        ((EditText) findViewById(R.id.questionTextField)).setText(getIntent().getStringExtra("Question_key"));
+        ((EditText) findViewById(R.id.answerTextField)).setText(getIntent().getStringExtra("Answer_key"));
+        ((EditText) findViewById(R.id.answerTextField1)).setText(getIntent().getStringExtra("Answer_key1"));
+        ((EditText) findViewById(R.id.answerTextField2)).setText(getIntent().getStringExtra("Answer_key2"));
 
         // User can tap on cancel button to go back to main activity
         findViewById(R.id.ic_cancel).setOnClickListener(new View.OnClickListener() {
@@ -44,13 +44,20 @@ public class AddCardActivity extends AppCompatActivity {
         findViewById(R.id.ic_down).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("AddCardActivity", (((EditText) findViewById(R.id.questionTextField)).getText().toString()));
+                if (((EditText) findViewById(R.id.questionTextField)).getText().toString().equals("") || ((EditText) findViewById(R.id.answerTextField)).getText().toString().equals("")
+                        || ((EditText) findViewById(R.id.answerTextField1)).getText().toString().equals("") || ((EditText) findViewById(R.id.answerTextField2)).getText().toString().equals("")) {
+                    Log.d("AddCardActivity", "If it works");
 
-                if (((EditText) findViewById(R.id.questionTextField)) == null || ((EditText) findViewById(R.id.answerTextField)) == null
-                        || ((EditText) findViewById(R.id.answerTextField1)) == null || ((EditText) findViewById(R.id.answerTextField2)) == null) {
-
-                    Toast toast = Toast.makeText(AddCardActivity.this, "Must enter all fields", Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
-                    toast.show();
+                    //Toast toast = Toast.makeText(AddCardActivity.this, "all fields", Toast.LENGTH_SHORT);
+                   // toast.setGravity(Gravity.CENTER_VERTICAL, 20, 0);
+                   // toast.show();
+                    Snackbar.make(view,
+                            " Must edit all fields",
+                            Snackbar.LENGTH_SHORT)
+                            .setTextColor(getColor(R.color.blue_dark))
+                            .setBackgroundTint(getColor(R.color.tan))
+                            .show();
                 }
                 else {
                     Intent data = new Intent();                             //create new intent to put data

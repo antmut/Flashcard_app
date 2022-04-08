@@ -1,12 +1,17 @@
 package com.example.flashcard;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     FlashcardDatabase flashcardDatabase;                                            //declaring as global variable flashcard
     List<Flashcard> allFlashcards;                                                  //declaring the whole list of flashcards
     int currentCardIndex = 0;
+    //int minNumber = 0;
+    //int maxNumber = 0;
+    CountDownTimer countDownTimer;
 
     int getRandomNumber(int minNumber, int maxNumber){
         Random rand = new Random();
@@ -87,6 +95,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // When user tap the eye icon answers become invisible
+        flashcardQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                flashcardAnswer1.setVisibility(View.VISIBLE);
+                flashcardAnswer2.setVisibility(View.VISIBLE);
+                flashcardAnswer3.setVisibility(View.VISIBLE);
+
+                View answerSideView1 = findViewById(R.id.flashcard_answer1);
+                View answerSideView2 = findViewById(R.id.flashcard_answer2);
+                View answerSideView3 = findViewById(R.id.flashcard_answer3);
+
+                // get the center for the clipping circle
+                int cx = answerSideView2.getWidth() / 2;
+                int cy = answerSideView2.getHeight() / 2;
+
+                // get the final radius for the clipping circle
+                float finalRadius = (float) Math.hypot(cx, cy);
+
+                // create the animator for this view (the start radius is zero)
+                Animator anim1 = ViewAnimationUtils.createCircularReveal(answerSideView1, cx, cy, 0f, finalRadius);
+                Animator anim2 = ViewAnimationUtils.createCircularReveal(answerSideView2, cx, cy, 0f, finalRadius);
+                Animator anim3 = ViewAnimationUtils.createCircularReveal(answerSideView3, cx, cy, 0f, finalRadius);
+
+                // hide the question and show the answer to prepare for playing the animation!
+                flashcardQuestion.setVisibility(View.INVISIBLE);
+                flashcardAnswer1.setVisibility(View.VISIBLE);
+                flashcardAnswer2.setVisibility(View.VISIBLE);
+                flashcardAnswer3.setVisibility(View.VISIBLE);
+
+                anim1.setDuration(3000);
+                anim1.start();
+                anim2.setDuration(3000);
+                anim2.start();
+                anim3.setDuration(3000);
+                anim3.start();
+            }
+        });
+
         // When User tap on 1st answer colors change accordingly
         findViewById(R.id.flashcard_answer1).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 MainActivity.this.startActivityForResult(intent, 100);
+                overridePendingTransition(R.anim.right_in, R.anim.left_in);
             }
         });
 
@@ -138,10 +186,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent myIntent = new Intent(MainActivity.this, AddCardActivity.class);
-                myIntent.putExtra("Question",((TextView) findViewById(R.id.flashcard_question)).getText().toString());
-                myIntent.putExtra("Answer1", ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString());
-                myIntent.putExtra("Answer2", ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString());
-                myIntent.putExtra("Answer3", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
+                myIntent.putExtra("Question_key",((TextView) findViewById(R.id.flashcard_question)).getText().toString());
+                myIntent.putExtra("Answer_key", ((TextView) findViewById(R.id.flashcard_answer1)).getText().toString());
+                myIntent.putExtra("Answer_key1", ((TextView) findViewById(R.id.flashcard_answer2)).getText().toString());
+                myIntent.putExtra("Answer_key2", ((TextView) findViewById(R.id.flashcard_answer3)).getText().toString());
                 MainActivity.this.startActivityForResult(myIntent, 101);
             }
         });
@@ -184,11 +232,40 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                     currentCardIndex = 0;
                 }
-                    Flashcard currentCard = allFlashcards.get(currentCardIndex);
-                    flashcardQuestion.setText(currentCard.getQuestion());
-                    flashcardAnswer1.setText(currentCard.getAnswer());
-                    flashcardAnswer2.setText(currentCard.getWrongAnswer1());
-                    flashcardAnswer3.setText(currentCard.getWrongAnswer2());
+
+                    //loading animations
+                    final Animation leftOutAnim = AnimationUtils.loadAnimation(view.getContext(), R.anim.left_in);
+                    final Animation rightInAnim = AnimationUtils.loadAnimation(view.getContext(), R.anim.right_in);
+
+                    leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            flashcardQuestion.startAnimation(rightInAnim);
+
+                            Flashcard currentCard = allFlashcards.get(currentCardIndex);
+                            flashcardQuestion.setText(currentCard.getQuestion());
+                            flashcardAnswer1.setText(currentCard.getAnswer());
+                            flashcardAnswer2.setText(currentCard.getWrongAnswer1());
+                            flashcardAnswer3.setText(currentCard.getWrongAnswer2());
+
+                            flashcardQuestion.setVisibility((View.VISIBLE));
+                            flashcardAnswer1.setVisibility(View.INVISIBLE);
+                            flashcardAnswer2.setVisibility(View.INVISIBLE);
+                            flashcardAnswer3.setVisibility((View.INVISIBLE));
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+
+                    flashcardQuestion.startAnimation(leftOutAnim);
             }
         });
 
@@ -229,18 +306,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            else if(requestCode == 101 && resultCode == RESULT_OK) {
+            else if(requestCode == 101) {
+                Log.d("MainActivity", String.valueOf(requestCode));
                 if(data != null) {
 
-                    String question = data.getExtras().getString("Question");
-                    String answer = data.getExtras().getString("Answer");
-                    String answer1 = data.getExtras().getString("Answer1");
-                    String answer2 = data.getExtras().getString("Answer2");
+                    String question = data.getExtras().getString("Question_key");
+                    String answer = data.getExtras().getString("Answer_key");
+                    String answer1 = data.getExtras().getString("Answer_key1");
+                    String answer2 = data.getExtras().getString("Answer_key2");
 
-                    editCard.setQuestion(question);
-                    editCard.setAnswer(answer);
-                    editCard.setWrongAnswer1(answer1);
-                    editCard.setWrongAnswer2(answer2);
+                    flashcardQuestion.setText(question);
+                    flashcardAnswer1.setText(answer);
+                    flashcardAnswer2.setText(answer1);
+                    flashcardAnswer3.setText(answer2);
+                    //editCard.setQuestion(question);
+                    //editCard.setAnswer(answer);
+                    //editCard.setWrongAnswer1(answer1);
+                    //editCard.setWrongAnswer2(answer2);
 
                     flashcardDatabase.updateCard(editCard);
                 }

@@ -4,6 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.1505" />
+        <entry key="app/src/main/res/drawable/ic_down.xml" value="0.114" />
+        <entry key="app/src/main/res/drawable/ic_launcher_layer.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/ic_launcher_new_background.xml" value="0.135" />
+        <entry key="app/src/main/res/drawable/ic_timer.xml" value="0.1575" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2346014492753623" />
         <entry key="app/src/main/res/layout/add_card_activity.xml" value="0.24728260869565216" />
       </map>
