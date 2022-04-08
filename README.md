@@ -3,12 +3,8 @@
 Lab4 is focused on understanding how and when to implement different types animations.
 
 ### App Walk-though
-`TODO://` Add the URL to your animated app walk-though `gif` in the image tag below. 
-Make sure the gif actually renders and animates when viewing this README.
 
-<img src="YOUR_GIF_URL_HERE" width=200><br>
-
-`TODO://` In the User stories section below, add an `x` between the `-[ ]` like this `- [x]` for any user story you complete. (☝️ Remove this paragraph after after checking off user stories)
+<img src="https://i.imgur.com/1Al4taR.gif" width=200><br>
 
 ## Required
 - [x] User sees a transition animation when going from the main screen to the add card screen.
@@ -24,8 +20,8 @@ Make sure the gif actually renders and animates when viewing this README.
 
 ## Lab 3
 ### App Description
-Lab3 introduces a method to add dependencies, prior setting up 
-     databases along with save and retrieve data within an app
+Lab3 introduces a method to add dependencies, prior setting up
+databases along with save and retrieve data within an app
 
 ### App Walk-though
 
@@ -82,5 +78,5 @@ Creating a flashcard and implementing basic features, set visibility, setOnClick
 - [x] toggle the flashcard between the question side and the answer side
 - [x] Style the question and answer side of the card to better distinguish between the two sides
 - [x] Add selectable multiple choice answers beneath the card
-  - [x] Change the background color of the multiple choice answers when clicked to indicate whether the question was answered correctly
+    - [x] Change the background color of the multiple choice answers when clicked to indicate whether the question was answered correctly
 - [x] Further customize and style the card
